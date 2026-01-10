@@ -1,0 +1,17 @@
+def count(text):
+    vowels = "aeiouAEIOU"
+    vowel_count = 0
+    consonant_count = 0
+
+    for letter in text:
+        if letter in vowels:
+            vowel_count += 1
+        elif letter.isalpha():
+            consonant_count += 1
+    return vowel_count, consonant_count
+
+input_string = input("Enter a string: ")
+vowels, consonants = count(input_string)
+
+print("Number of vowels:", vowels)
+print("Number of consonants:", consonants)

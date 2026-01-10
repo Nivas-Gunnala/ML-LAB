@@ -1,0 +1,36 @@
+def multiply(matrix_a, matrix_b):
+    if len(matrix_a[0]) != len(matrix_b):
+        return None
+    result = []
+    for i in range(len(matrix_a)):
+        row = []
+        for j in range(len(matrix_b[0])):
+            value = 0
+            for k in range(len(matrix_b)):
+                value += matrix_a[i][k]*matrix_b[k][j]
+            row.append(value)
+        result.append(row)
+    return result
+
+rows_a = int(input("Enter rows of Matrix A: "))
+cols_a = int(input("Enter columns of Matrix A: "))
+
+matrix_a = []
+print("Enter Matrix A:")
+for i in range(rows_a):
+    matrix_a.append(list(map(int, input().split())))
+
+rows_b = int(input("Enter rows of Matrix B: "))
+cols_b = int(input("Enter columns of Matrix B: "))
+
+matrix_b = []
+print("Enter Matrix B:")
+for i in range(rows_b):
+    matrix_b.append(list(map(int, input().split())))
+result_matrix = multiply(matrix_a, matrix_b)
+if result_matrix is None:
+    print("Error: Matrices cannot be multiplied")
+else:
+    print("Resultant Matrix:")
+    for row in result_matrix:
+        print(row)
