@@ -1,0 +1,21 @@
+def transpose(matrix):
+    rows = len(matrix)
+    columns = len(matrix[0])
+    transpose = []
+    for j in range(columns):
+        row = []
+        for i in range(rows):
+            row.append(matrix[i][j])
+        transpose.append(row)
+    return transpose
+
+rows = int(input("Enter number of rows: "))
+columns = int(input("Enter number of columns: "))
+matrix = []
+print("Enter the matrix elements:")
+for i in range(rows):
+    matrix.append(list(map(int, input().split())))
+result = transpose(matrix)
+print("Transpose of the matrix:")
+for row in result:
+    print(row)

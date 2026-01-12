@@ -1,0 +1,19 @@
+def count(list_one, list_two):
+    count = 0
+    for element in list_one:
+        if element in list_two:
+            count += 1
+    return count
+
+size_one = int(input("Enter number of elements in first list: "))
+list_one = []
+print("Enter elements of first list:")
+for i in range(size_one):
+    list_one.append(int(input()))
+size_two = int(input("Enter number of elements in second list: "))
+list_two = []
+print("Enter elements of second list:")
+for i in range(size_two):
+    list_two.append(int(input()))
+common_elements = count(list_one, list_two)
+print("Number of common elements:", common_elements)

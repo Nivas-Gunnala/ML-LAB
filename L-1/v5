@@ -1,0 +1,30 @@
+import random
+def calculate_mean(numbers):
+    total = sum(numbers)
+    return total / len(numbers)
+def calculate_median(numbers):
+    sorted_numbers = sorted(numbers)
+    middle = len(sorted_numbers) // 2
+    return (sorted_numbers[middle - 1] + sorted_numbers[middle]) / 2
+def calculate_mode(numbers):
+    frequency = {}
+    for number in numbers:
+        if number in frequency:
+            frequency[number] += 1
+        else:
+            frequency[number] = 1
+    max_count = max(frequency.values())
+    for key in frequency:
+        if frequency[key] == max_count:
+            return key
+
+random_numbers = []
+for i in range(100):
+    random_numbers.append(random.randint(100, 150))
+mean_value = calculate_mean(random_numbers)
+median_value = calculate_median(random_numbers)
+mode_value = calculate_mode(random_numbers)
+print("Random Numbers:", random_numbers)
+print("Mean:", mean_value)
+print("Median:", median_value)
+print("Mode:", mode_value)
