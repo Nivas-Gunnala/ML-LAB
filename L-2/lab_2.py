@@ -43,21 +43,16 @@ data["Class"] = data["Payment (Rs)"].apply(
 
 print(data[["Candies (#)", "Mangoes (Kg)", "Milk Packets (#)", "Payment (Rs)", "Class"]])
 
-
-# Load data
 data = pd.read_excel(file_path, sheet_name="IRCTC Stock Price")
 
-# Column D - Price
 price = data.iloc[:, 3]
 
-# Mean and Variance using NumPy
 mean_np = np.mean(price)
 var_np = np.var(price)
 
 print("Population Mean:", mean_np)
 print("Population Variance:", var_np)
 
-# Own functions
 def my_mean(values):
     return sum(values) / len(values)
 
@@ -68,7 +63,6 @@ def my_variance(values):
 print("Mean (Own):", my_mean(price))
 print("Variance (Own):", my_variance(price))
 
-# Time comparison (10 runs)
 def avg_time(func, values):
     times = []
     for _ in range(10):
@@ -93,7 +87,6 @@ else:
 april_data = data[data["Month"] == "Apr"]
 print("April Mean:", april_data.iloc[:, 3].mean())
 
-# Probability of loss (Chg% < 0)
 chg = data.iloc[:, 8]
 loss = list(filter(lambda x: x < 0, chg))
 print("Probability of Loss:", len(loss) / len(chg))
@@ -107,7 +100,6 @@ if len(wednesday_chg) > 0:
 else:
     print("Probability of Profit on Wednesday: Not Available")
 
-# Scatter plot
 plt.scatter(data["Day"], chg)
 plt.xlabel("Day")
 plt.ylabel("Chg %")
@@ -147,15 +139,11 @@ for col in numerical_cols:
     print(col, "Mean:", thyroid[col].mean(), "Variance:", thyroid[col].var())
 
 
-
-# Load data
 data = pd.read_excel(file_path, sheet_name="thyroid0387_UCI")
 
-# Take first two observation vectors
 v1 = data.iloc[0]
 v2 = data.iloc[1]
 
-# Select only binary attributes (0/1)
 binary_cols = [
     col for col in data.columns
     if set(data[col].dropna().unique()).issubset({0, 1})
@@ -164,10 +152,9 @@ binary_cols = [
 v1_bin = v1[binary_cols]
 v2_bin = v2[binary_cols]
 
-# Initialize counts
+
 f11 = f10 = f01 = f00 = 0
 
-# Count f-values
 for a, b in zip(v1_bin, v2_bin):
     if a == 1 and b == 1:
         f11 += 1
@@ -178,13 +165,11 @@ for a, b in zip(v1_bin, v2_bin):
     elif a == 0 and b == 0:
         f00 += 1
 
-# Jaccard Coefficient (safe)
 if (f11 + f10 + f01) != 0:
     JC = f11 / (f11 + f10 + f01)
 else:
     JC = 0
 
-# Simple Matching Coefficient (safe)
 if (f11 + f10 + f01 + f00) != 0:
     SMC = (f11 + f00) / (f11 + f10 + f01 + f00)
 else:
@@ -194,17 +179,13 @@ print("Jaccard Coefficient:", JC)
 print("Simple Matching Coefficient:", SMC)
 
 
-# Load data
 data = pd.read_excel(file_path, sheet_name="thyroid0387_UCI")
 
-# Select only numeric columns
 numeric_data = data.select_dtypes(exclude=["object"])
 
-# Take first two observation vectors
 v1 = numeric_data.iloc[0].fillna(0).values
 v2 = numeric_data.iloc[1].fillna(0).values
 
-# Cosine Similarity calculation
 cosine_similarity = np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2))
 
 print("Cosine Similarity:", cosine_similarity)
@@ -212,10 +193,8 @@ print("Cosine Similarity:", cosine_similarity)
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Take first 20 vectors
 subset = data.iloc[:20]
 
-# Use only binary columns
 binary_cols = [
     col for col in subset.columns
     if set(subset[col].dropna().unique()).issubset({0, 1})
@@ -223,7 +202,6 @@ binary_cols = [
 
 bin_data = subset[binary_cols].fillna(0).values
 
-# Jaccard similarity matrix
 jc_matrix = []
 
 for i in range(len(bin_data)):
@@ -239,57 +217,3 @@ for i in range(len(bin_data)):
 sns.heatmap(jc_matrix)
 plt.title("Jaccard Similarity Heatmap")
 plt.show()
-
-
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-# Take first 20 vectors
-subset = data.iloc[:20]
-
-# Use only binary columns
-binary_cols = [
-    col for col in subset.columns
-    if set(subset[col].dropna().unique()).issubset({0, 1})
-]
-
-bin_data = subset[binary_cols].fillna(0).values
-
-# Jaccard similarity matrix
-jc_matrix = []
-
-for i in range(len(bin_data)):
-    row = []
-    for j in range(len(bin_data)):
-        f11 = np.sum((bin_data[i] == 1) & (bin_data[j] == 1))
-        f10 = np.sum((bin_data[i] == 1) & (bin_data[j] == 0))
-        f01 = np.sum((bin_data[i] == 0) & (bin_data[j] == 1))
-        denom = f11 + f10 + f01
-        row.append(f11 / denom if denom != 0 else 0)
-    jc_matrix.append(row)
-
-sns.heatmap(jc_matrix)
-plt.title("Jaccard Similarity Heatmap")
-plt.show()
-
-# Mean for numeric, Mode for categorical
-
-# A8: Data Imputation (FIXED)
-
-for col in data.columns:
-    if data[col].dtype == "object":
-        data[col] = data[col].fillna(data[col].mode()[0])
-    else:
-        data[col] = data[col].fillna(data[col].mean())
-
-print("Missing values filled")
-# A9: Data Normalization (MIN-MAX SCALING)
-from sklearn.preprocessing import MinMaxScaler
-
-# Select numeric columns
-num_cols = data.select_dtypes(exclude=["object"]).columns
-
-scaler = MinMaxScaler()
-data[num_cols] = scaler.fit_transform(data[num_cols])
-
-print("Data normalized using Min-Max scaling")
